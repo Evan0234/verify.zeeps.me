@@ -1,0 +1,32 @@
+# .github/workflows/send-text.yml
+name: Send Text Message
+
+on:
+  workflow_dispatch:
+    inputs:
+      phone:
+        description: 'Phone number to validate and send a text'
+        required: true
+        default: '14154582468'  
+
+jobs:
+  send-text:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Send Phone Validation Request
+      run: |
+        # Use curl to send the request to the Abstract API
+        phone='${{ github.event.inputs.phone }}'
+        api_key='${{ secrets.ABSTRACT_API_KEY }}'
+        
+        # Call the Abstract API
+        response=$(curl -s "https://phonevalidation.abstractapi.com/v1/?api_key=${api_key}&phone=${phone}")
+
+        # Check the response and print it
+        echo "Response from Abstract API:"
+        echo "${response}"
+
+        # Optional: You can add logic here to check the response and send a text message if needed
+      env:
+        ABSTRACT_API_KEY: ${{ secrets.ABSTRACT_API_KEY }}
