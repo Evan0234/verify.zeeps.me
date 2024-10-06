@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Verification</title>
+</head>
+<body>
+    <h1>Verify Your Phone Number</h1>
+    <form id="phoneForm">
+        <input type="text" id="phoneNumber" placeholder="Enter your phone number" required>
+        <button type="submit">Send Verification</button>
+    </form>
+    <div id="responseMessage"></div>
+
+    <script>
+        document.getElementById('phoneForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const phoneNumber = document.getElementById('phoneNumber').value;
+
+            const response = await fetch('https://phonevalidation.abstractapi.com/v1/?api_key=' + process.env.ABSTRACT_API_KEY + '&phone=' + phoneNumber);
+            const data = await response.json();
+
+            document.getElementById('responseMessage').innerText = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>
