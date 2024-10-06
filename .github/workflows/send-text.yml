@@ -1,0 +1,35 @@
+name: Send Text Message
+
+on:
+  workflow_dispatch:
+
+jobs:
+  send_text_message:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Send text message
+        env:
+          ABSTRACT_API_KEY: ${{ secrets.ABSTRACT_API_KEY }}
+        run: |
+          const fetch = require('node-fetch');
+
+          const phoneNumber = '14154582468'; // Example phone number
+          const apiKey = process.env.ABSTRACT_API_KEY;
+          const url = `https://phonevalidation.abstractapi.com/v1/?api_key=${apiKey}&phone=${phoneNumber}`;
+
+          fetch(url)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
