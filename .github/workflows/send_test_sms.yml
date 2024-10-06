@@ -1,0 +1,33 @@
+name: Send Test SMS
+
+on:
+  workflow_dispatch:
+    inputs:
+      phone_number:
+        description: 'Phone number to send the message'
+        required: true
+
+jobs:
+  send_sms:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Send test SMS
+      env:
+        ABSTRACT_API_KEY: ${{ secrets.ABSTRACT_API_KEY }}
+      run: |
+        python send_sms.py
+      with:
+        args: ${{ github.event.inputs.phone_number }}
