@@ -17,11 +17,11 @@ jobs:
 
       - name: Send SMS via Abstract API
         env:
-          ABSTRACT_API_KEY: ${{ secrets.ABSTRACT_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.G_TOKEN }} 
+          ABSTRACT_API_KEY: ${{ secrets.ABSTRACT_API_KEY }}  # Store your Abstract API key here
+          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}  # Your GitHub token for authentication
         run: |
           PHONE_NUMBER="${{ github.event.inputs.phone }}"
           RESPONSE=$(curl -s "https://phonevalidation.abstractapi.com/v1/?api_key=${ABSTRACT_API_KEY}&phone=${PHONE_NUMBER}")
 
-          # Check response and print
+          # Print the response from the API
           echo "Response from Abstract API: $RESPONSE"
