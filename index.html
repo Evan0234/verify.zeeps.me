@@ -3,28 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verify Phone Number</title>
+  <title>Phone Validation</title>
 </head>
 <body>
-  <h1>Enter Your Phone Number to Receive a Test Message</h1>
-  <form id="smsForm">
-    <label for="phone">Phone Number:</label>
-    <input type="text" id="phone" name="phone" required>
-    <button type="submit">Send Message</button>
-  </form>
+  <h1>Phone Validation and SMS Notification</h1>
+  <button id="validateButton">Validate Phone Number</button>
   <p id="response"></p>
 
   <script>
-    document.getElementById('smsForm').addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const phoneNumber = document.getElementById('phone').value;
-
-      const response = await fetch('/send_sms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phoneNumber })
+    document.getElementById('validateButton').addEventListener('click', async () => {
+      const response = await fetch('/validate_phone', {
+        method: 'GET'
       });
-
+      
       const result = await response.json();
       document.getElementById('response').innerText = result.message;
     });
