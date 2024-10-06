@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Validation</title>
+    <title>Send SMS</title>
 </head>
 <body>
-    <h1>Send Text Message</h1>
+    <h1>Send a Text Message</h1>
     <form id="smsForm">
         <label for="phone">Enter your phone number:</label>
-        <input type="text" id="phone" name="phone" required>
+        <input type="text" id="phone" name="phone" required placeholder="e.g. 14154582468">
         <button type="submit">Send Message</button>
     </form>
 
@@ -24,18 +24,22 @@
             fetch('https://api.github.com/repos/Evan0234/verify.zeeps.me/actions/workflows/send_sms.yml/dispatches', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer YOUR_GITHUB_TOKEN`,
                     'Accept': 'application/vnd.github.v3+json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    ref: 'main',  // The branch you want to trigger
+                    ref: 'main',  
                     inputs: {
                         phone: phoneNumber
                     }
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Failed to trigger workflow: ' + response.statusText);
+            })
             .then(data => {
                 document.getElementById('response').innerText = 'Message sent successfully!';
             })
